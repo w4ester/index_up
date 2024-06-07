@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+import defusedxml.ElementTree
 
 
 class PubmedReader(BaseReader):
@@ -27,7 +28,6 @@ class PubmedReader(BaseReader):
         Returns:
             List[Document]: A list of Document objects.
         """
-        import xml.etree.ElementTree as xml
         from datetime import datetime
 
         import requests
@@ -40,7 +40,7 @@ class PubmedReader(BaseReader):
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
             params=parameters,
         )
-        root = xml.fromstring(resp.content)
+        root = defusedxml.ElementTree.fromstring(resp.content)
 
         for elem in root.iter():
             if elem.tag == "Id":
@@ -110,7 +110,6 @@ class PubmedReader(BaseReader):
             List[Document]: A list of Document objects.
         """
         import time
-        import xml.etree.ElementTree as xml
 
         import requests
 
@@ -122,7 +121,7 @@ class PubmedReader(BaseReader):
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
             params=parameters,
         )
-        root = xml.fromstring(resp.content)
+        root = defusedxml.ElementTree.fromstring(resp.content)
 
         for elem in root.iter():
             if elem.tag == "Id":
@@ -131,7 +130,7 @@ class PubmedReader(BaseReader):
                 print(url)
                 try:
                     resp = requests.get(url)
-                    info = xml.fromstring(resp.content)
+                    info = defusedxml.ElementTree.fromstring(resp.content)
 
                     raw_text = ""
                     title = ""

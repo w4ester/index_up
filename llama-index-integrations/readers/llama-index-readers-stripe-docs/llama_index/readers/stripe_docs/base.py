@@ -1,10 +1,10 @@
 import urllib.request
-import xml.etree.ElementTree as ET
 from typing import List
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from llama_index.readers.web import AsyncWebPageReader
+import defusedxml.ElementTree
 
 XML_SITEMAP_SCHEMA = "http://www.sitemaps.org/schemas/sitemap/0.9"
 STRIPE_SITEMAP_URL = "https://stripe.com/sitemap/sitemap.xml"
@@ -36,7 +36,7 @@ class StripeDocsReader(BaseReader):
     def _parse_sitemap(
         self, raw_sitemap: str, filters: List[str] = DEFAULT_FILTERS
     ) -> List:
-        root_sitemap = ET.fromstring(raw_sitemap)
+        root_sitemap = defusedxml.ElementTree.fromstring(raw_sitemap)
         sitemap_partition_urls = []
         sitemap_urls = []
 
@@ -45,7 +45,7 @@ class StripeDocsReader(BaseReader):
             sitemap_partition_urls.append(loc)
 
         for sitemap_partition_url in sitemap_partition_urls:
-            sitemap_partition = ET.fromstring(self._load_url(sitemap_partition_url))
+            sitemap_partition = defusedxml.ElementTree.fromstring(self._load_url(sitemap_partition_url))
 
             # Find all <url /> and iterate through them
             for url in sitemap_partition.findall(f"{{{XML_SITEMAP_SCHEMA}}}url"):
