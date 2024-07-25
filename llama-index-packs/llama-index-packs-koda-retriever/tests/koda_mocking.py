@@ -11,7 +11,7 @@ AUTHOR: no_dice
 
 from llama_index.core.llms.mock import MockLLM
 from llama_index.core.base.llms.types import CompletionResponse
-import random
+import secrets
 
 
 PROMPT_RESPONSES = {
@@ -33,7 +33,7 @@ class KVMockLLM(MockLLM):
 
     def random_prompt(self) -> str:
         """Returns a random prompt from the prompt_responses dictionary."""
-        return random.choice(list(self.prompt_responses.keys()))
+        return secrets.choice(list(self.prompt_responses.keys()))
 
     def complete(self, prompt: str, **kwargs) -> CompletionResponse:
         """Returns a response that was matched from the given prompt."""

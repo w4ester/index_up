@@ -1,7 +1,6 @@
 import asyncio
 import math
 import numpy as np
-import random
 import tqdm
 
 from functools import reduce
@@ -36,6 +35,7 @@ from prv_accountant.privacy_random_variables import (
 from prv_accountant import PRVAccountant
 
 import llama_index.core.instrumentation as instrument
+import secrets
 
 dispatcher = instrument.get_dispatcher(__name__)
 
@@ -168,11 +168,11 @@ class DiffPrivateSimpleDatasetPack(BaseLlamaPack):
     ) -> List[LabelledSimpleDataset]:
         """Splits a dataset into a set of disjoint datasets with equal number of examples."""
         indexes = list(range(len(dataset.examples)))
-        random.shuffle(indexes)
+        secrets.SystemRandom().shuffle(indexes)
         partitions = [indexes[i::num_splits] for i in range(num_splits)]
         splits = []
         for p in partitions:
-            sample = random.sample(p, num_samples_per_split)
+            sample = secrets.SystemRandom().sample(p, num_samples_per_split)
             if not len(sample) == num_samples_per_split:
                 raise ValueError(
                     "Not able to create disjoint sets with current values of `num_splits` and `num_samples_per_split`."

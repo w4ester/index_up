@@ -3,11 +3,11 @@
 # Inspired from https://github.com/ShishirPatil/gorilla/tree/main/raft
 
 from typing import Any, List
-import random
 import logging
 import warnings
 
 from datasets import Dataset
+import secrets
 
 # Configure logging to output to the console, with messages of level DEBUG and above
 logger = logging.getLogger(__name__)
@@ -168,13 +168,13 @@ class RAFTDatasetPack(BaseLlamaPack):
             docs = [chunk]
             indices = list(range(len(chunks)))
             indices.remove(i)
-            for j in random.sample(indices, num_distract):
+            for j in secrets.SystemRandom().sample(indices, num_distract):
                 docs.append(chunks[j])
             # decides whether to add oracle document
-            oracle = random.uniform(0, 1) < p
+            oracle = secrets.SystemRandom().uniform(0, 1) < p
             if not oracle:
-                docs[0] = chunks[random.sample(indices, 1)[0]]
-            random.shuffle(docs)
+                docs[0] = chunks[secrets.SystemRandom().sample(indices, 1)[0]]
+            secrets.SystemRandom().shuffle(docs)
 
             d = {"title": [], "sentences": []}
 
