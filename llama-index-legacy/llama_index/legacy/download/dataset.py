@@ -4,8 +4,6 @@ import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-
-import requests
 import tqdm
 
 from llama_index.legacy.download.module import LLAMA_HUB_URL
@@ -14,6 +12,7 @@ from llama_index.legacy.download.utils import (
     get_file_content_bytes,
     initialize_directory,
 )
+from security import safe_requests
 
 LLAMA_DATASETS_LFS_URL = (
     f"https://media.githubusercontent.com/media/run-llama/llama-datasets/main"
@@ -47,7 +46,7 @@ def _resolve_dataset_file_name(class_name: str) -> str:
 
 def _get_source_files_list(source_tree_url: str, path: str) -> List[str]:
     """Get the list of source files to download."""
-    resp = requests.get(
+    resp = safe_requests.get(
         source_tree_url + path + "?recursive=1", headers={"Accept": "application/json"}
     )
     payload = resp.json()["payload"]

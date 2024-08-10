@@ -1,8 +1,7 @@
 from typing import List
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class MainContentExtractorReader(BaseReader):
@@ -37,7 +36,7 @@ class MainContentExtractorReader(BaseReader):
 
         documents = []
         for url in urls:
-            response = requests.get(url).text
+            response = safe_requests.get(url).text
             response = MainContentExtractor.extract(
                 response, output_format=self.text_format, include_links=False
             )

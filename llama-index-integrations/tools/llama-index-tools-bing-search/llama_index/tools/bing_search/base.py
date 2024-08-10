@@ -1,9 +1,8 @@
 """Bing Search tool spec."""
 
 from typing import List, Optional
-
-import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 ENDPOINT_BASE_URL = "https://api.bing.microsoft.com/v7.0/"
 
@@ -22,7 +21,7 @@ class BingSearchToolSpec(BaseToolSpec):
         self.results = results
 
     def _bing_request(self, endpoint: str, query: str, keys: List[str]):
-        response = requests.get(
+        response = safe_requests.get(
             ENDPOINT_BASE_URL + endpoint,
             headers={"Ocp-Apim-Subscription-Key": self.api_key},
             params={"q": query, "mkt": self.lang, "count": self.results},

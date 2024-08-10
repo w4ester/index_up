@@ -5,12 +5,11 @@ import os
 import tempfile
 import time
 from typing import Any, Dict, List, Optional, Union
-
-import requests
 from llama_index.core.readers import SimpleDirectoryReader
 from llama_index.core.readers.base import BaseReader, BasePydanticReader
 from llama_index.core.schema import Document
 from llama_index.core.bridge.pydantic import PrivateAttr, Field
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -209,7 +208,7 @@ class OneDriveReader(BasePydanticReader):
         retries = 0
 
         while retries < max_retries:
-            response = requests.get(endpoint, headers=headers)
+            response = safe_requests.get(endpoint, headers=headers)
             if response.status_code == 200:
                 return response.json()
             # Check for Ratelimit error, this can happen if you query endpoint recursively
@@ -245,7 +244,7 @@ class OneDriveReader(BasePydanticReader):
         file_name = item["name"]
 
         # Download the file.
-        file_data = requests.get(file_download_url)
+        file_data = safe_requests.get(file_download_url)
 
         # Save the downloaded file to the specified local directory.
         file_path = os.path.join(local_dir, file_name)

@@ -5,6 +5,7 @@ from urllib.parse import urljoin
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class MemosReader(BaseReader):
@@ -28,7 +29,6 @@ class MemosReader(BaseReader):
             List[Document]: List of documents.
 
         """
-        import requests
 
         documents = []
         realUrl = self._memoUrl
@@ -37,7 +37,7 @@ class MemosReader(BaseReader):
             realUrl = urljoin(self._memoUrl, "all", False)
 
         try:
-            req = requests.get(realUrl, params)
+            req = safe_requests.get(realUrl, params)
             res = req.json()
         except ValueError:
             raise ValueError("Your Memo URL is not valid")

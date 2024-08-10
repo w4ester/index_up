@@ -4,6 +4,7 @@ from typing import List
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class IntercomReader(BaseReader):
@@ -69,7 +70,6 @@ class IntercomReader(BaseReader):
         return articles
 
     def get_articles_page(self, next_page: str = None):
-        import requests
 
         if next_page is None:
             url = "https://api.intercom.io/articles"
@@ -82,7 +82,7 @@ class IntercomReader(BaseReader):
             "authorization": f"Bearer {self.intercom_access_token}",
         }
 
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
 
         response_json = json.loads(response.text)
 

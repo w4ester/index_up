@@ -5,8 +5,6 @@ import string
 from collections import Counter
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
-
-import requests
 import tqdm
 from llama_index.core.base.base_query_engine import BaseQueryEngine
 from llama_index.core.base.base_retriever import BaseRetriever
@@ -15,6 +13,7 @@ from llama_index.core.query_engine.retriever_query_engine import (
 )
 from llama_index.core.schema import NodeWithScore, QueryBundle, TextNode
 from llama_index.core.utils import get_cache_dir
+from security import safe_requests
 
 DEV_DISTRACTOR_URL = """http://curtis.ml.cmu.edu/datasets/\
 hotpot/hotpot_dev_distractor_v1.json"""
@@ -38,7 +37,7 @@ class HotpotQAEvaluator:
                 save_file = open(
                     os.path.join(dataset_full_path, "dev_distractor.json"), "wb"
                 )
-                response = requests.get(url, stream=True)
+                response = safe_requests.get(url, stream=True)
 
                 # Define the size of each chunk
                 chunk_size = 1024
