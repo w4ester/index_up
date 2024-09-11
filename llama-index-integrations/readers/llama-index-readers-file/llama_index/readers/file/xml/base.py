@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+import defusedxml.ElementTree
 
 
 def _get_leaf_nodes_up_to_level(root: ET.Element, level: int) -> List[ET.Element]:
@@ -89,5 +90,5 @@ class XMLReader(BaseReader):
         if not isinstance(file, Path):
             file = Path(file)
 
-        tree = ET.parse(file)
+        tree = defusedxml.ElementTree.parse(file)
         return self._parse_xmlelt_to_document(tree.getroot(), extra_info)
