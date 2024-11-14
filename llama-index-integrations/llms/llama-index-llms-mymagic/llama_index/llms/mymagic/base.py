@@ -192,7 +192,7 @@ class MyMagicAI(LLM):
             self.completion_url,
             json=question_data,
             headers=headers,
-        )
+        timeout=60)
         resp.raise_for_status()
         return resp.json()
 

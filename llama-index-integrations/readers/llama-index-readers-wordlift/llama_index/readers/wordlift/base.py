@@ -77,8 +77,8 @@ class WordLiftLoader(BaseReader):
         try:
             query = self.alter_query()
             response = requests.post(
-                self.endpoint, json={"query": query}, headers=self.headers
-            )
+                self.endpoint, json={"query": query}, headers=self.headers, 
+            timeout=60)
             response.raise_for_status()
             data = response.json()
             if ERRORS_KEY in data:
@@ -227,7 +227,7 @@ def is_valid_html(content: str) -> bool:
 
     if is_url(content):
         try:
-            response = requests.get(content)
+            response = requests.get(content, timeout=60)
             if response.status_code == 200:
                 html_content = response.text
                 return (
@@ -268,7 +268,7 @@ def clean_html(text: str) -> str:
     if isinstance(text, str):
         try:
             if is_url(text):
-                response = requests.get(text)
+                response = requests.get(text, timeout=60)
                 if response.status_code == 200:
                     html_content = response.text
                     soup = BeautifulSoup(html_content, "lxml")

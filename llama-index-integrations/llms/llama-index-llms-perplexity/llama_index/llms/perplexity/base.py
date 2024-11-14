@@ -183,7 +183,7 @@ class Perplexity(LLM):
             ],
             **self._get_all_kwargs(**kwargs),
         }
-        response = requests.post(url, json=payload, headers=self.headers)
+        response = requests.post(url, json=payload, headers=self.headers, timeout=60)
         response.raise_for_status()
         data = response.json()
         return CompletionResponse(text=data["choices"][0]["message"], raw=data)
@@ -205,7 +205,7 @@ class Perplexity(LLM):
             ],
             **self._get_all_kwargs(**kwargs),
         }
-        response = requests.post(url, json=payload, headers=self.headers)
+        response = requests.post(url, json=payload, headers=self.headers, timeout=60)
         response.raise_for_status()
         data = response.json()
         message = ChatMessage(

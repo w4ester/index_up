@@ -91,7 +91,7 @@ class ReadmeReader(BaseReader):
             list: A list containing dictionaries with document information.
         """
         url = f"https://dash.readme.com/api/v1/categories/{category_slug}/docs"
-        response = requests.get(url, headers=self._headers)
+        response = requests.get(url, headers=self._headers, timeout=60)
 
         docs = response.json()
 
@@ -109,7 +109,7 @@ class ReadmeReader(BaseReader):
             dict: A dictionary containing document information.
         """
         url = f"https://dash.readme.com/api/v1/docs/{document_slug}"
-        response = requests.get(url, headers=self._headers)
+        response = requests.get(url, headers=self._headers, timeout=60)
 
         return response.json()
 
@@ -126,7 +126,7 @@ class ReadmeReader(BaseReader):
         """
         url = "https://dash.readme.com/api/v1/categories"
         params["page"] = page
-        response = requests.get(url, params=params, headers=self._headers)
+        response = requests.get(url, params=params, headers=self._headers, timeout=60)
         # total counts and categories
         return int(response.headers.get("x-total-count", 0)), response.json()
 

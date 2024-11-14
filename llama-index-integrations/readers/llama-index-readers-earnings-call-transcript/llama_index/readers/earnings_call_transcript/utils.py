@@ -50,7 +50,7 @@ def get_earnings_transcript(quarter: str, ticker: str, year: int):
     response = requests.get(
         f"https://discountingcashflows.com/api/transcript/{ticker}/{quarter}/{year}/",
         auth=("user", "pass"),
-    )
+    timeout=60)
 
     resp_text = json.loads(response.text)
     speakers_list = extract_speakers(resp_text[0]["content"])

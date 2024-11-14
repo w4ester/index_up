@@ -97,7 +97,7 @@ class DeepInfraEmbeddingModel(BaseEmbedding):
                     "Authorization": f"Bearer {self._api_token}",
                     "Content-Type": "application/json",
                 },
-            )
+            timeout=60)
             response.raise_for_status()
             embeddings.extend(response.json()["embeddings"])
         return embeddings

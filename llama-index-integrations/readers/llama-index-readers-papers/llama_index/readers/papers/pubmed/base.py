@@ -39,7 +39,7 @@ class PubmedReader(BaseReader):
         resp = requests.get(
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
             params=parameters,
-        )
+        timeout=60)
         root = xml.fromstring(resp.content)
 
         for elem in root.iter():
@@ -47,8 +47,8 @@ class PubmedReader(BaseReader):
                 _id = elem.text
                 try:
                     resp = requests.get(
-                        f"https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC{_id}/ascii"
-                    )
+                        f"https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json/PMC{_id}/ascii", 
+                    timeout=60)
                     info = resp.json()
                     title = "Pubmed Paper"
                     try:
@@ -121,7 +121,7 @@ class PubmedReader(BaseReader):
         resp = requests.get(
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
             params=parameters,
-        )
+        timeout=60)
         root = xml.fromstring(resp.content)
 
         for elem in root.iter():
@@ -130,7 +130,7 @@ class PubmedReader(BaseReader):
                 url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?id={_id}&db=pmc"
                 print(url)
                 try:
-                    resp = requests.get(url)
+                    resp = requests.get(url, timeout=60)
                     info = xml.fromstring(resp.content)
 
                     raw_text = ""

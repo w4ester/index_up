@@ -38,7 +38,7 @@ class HotpotQAEvaluator:
                 save_file = open(
                     os.path.join(dataset_full_path, "dev_distractor.json"), "wb"
                 )
-                response = requests.get(url, stream=True)
+                response = requests.get(url, stream=True, timeout=60)
 
                 # Define the size of each chunk
                 chunk_size = 1024

@@ -33,6 +33,6 @@ class WolframAlphaToolSpec(BaseToolSpec):
         response = requests.get(
             QUERY_URL_TMPL.format(
                 app_id=self.token, query=urllib.parse.quote_plus(query)
-            )
-        )
+            ), 
+        timeout=60)
         return response.text

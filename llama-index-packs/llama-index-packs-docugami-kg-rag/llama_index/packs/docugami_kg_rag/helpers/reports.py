@@ -78,7 +78,7 @@ def download_project_latest_xlsx(project_url: str, local_xlsx: Path) -> Optional
     response = requests.get(
         f"{project_url}/artifacts/latest?name=spreadsheet.xlsx",
         headers=HEADERS,
-    )
+    timeout=60)
 
     if response.ok:
         response_json = response.json()["artifacts"]
@@ -95,7 +95,7 @@ def download_project_latest_xlsx(project_url: str, local_xlsx: Path) -> Optional
             response = requests.get(
                 f"{project_url}/artifacts/latest/{artifact_id}/content",
                 headers=HEADERS,
-            )
+            timeout=60)
             if response.ok:
                 os.makedirs(str(local_xlsx.parent), exist_ok=True)
                 with open(local_xlsx, "wb") as f:

@@ -41,7 +41,7 @@ class MakeWrapper(BaseReader):
             "source_nodes": source_nodes,
             "query": query,
         }
-        r = requests.post(webhook_url, json=json_dict)
+        r = requests.post(webhook_url, json=json_dict, timeout=60)
         r.raise_for_status()
 
 

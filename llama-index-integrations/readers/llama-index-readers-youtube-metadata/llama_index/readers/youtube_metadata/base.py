@@ -22,7 +22,7 @@ class YouTubeMetaData(BasePydanticReader):
         for chunk in video_id_chunks:
             videos_string = ",".join(chunk)
             url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id={videos_string}&key={self.api_key}"
-            response = requests.get(url).json()
+            response = requests.get(url, timeout=60).json()
             if "items" not in response:
                 print("Error in API response:", response)
                 continue

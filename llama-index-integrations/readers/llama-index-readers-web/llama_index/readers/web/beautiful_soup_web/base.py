@@ -38,7 +38,7 @@ def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, A
 
     texts = []
     for doc_link in rtd_links:
-        page_link = requests.get(doc_link)
+        page_link = requests.get(doc_link, timeout=60)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = soup.find(attrs={"role": "main"}).get_text()
@@ -66,7 +66,7 @@ def _readmedocs_reader(
 
     texts = []
     for doc_link in docs_links:
-        page_link = requests.get(doc_link)
+        page_link = requests.get(doc_link, timeout=60)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = ""
@@ -108,7 +108,7 @@ def _gitbook_reader(
 
     texts = []
     for doc_link in docs_links:
-        page_link = requests.get(doc_link)
+        page_link = requests.get(doc_link, timeout=60)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = ""
@@ -182,7 +182,7 @@ class BeautifulSoupWebReader(BasePydanticReader):
         documents = []
         for url in urls:
             try:
-                page = requests.get(url)
+                page = requests.get(url, timeout=60)
             except Exception:
                 raise ValueError(f"One of the inputs is not a valid url: {url}")
 

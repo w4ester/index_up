@@ -7,13 +7,13 @@ import requests
 
 def get_file_content(url: str, path: str) -> Tuple[str, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(url + path)
+    resp = requests.get(url + path, timeout=60)
     return resp.text, resp.status_code
 
 
 def get_file_content_bytes(url: str, path: str) -> Tuple[bytes, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(url + path)
+    resp = requests.get(url + path, timeout=60)
     return resp.content, resp.status_code
 
 

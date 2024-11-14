@@ -34,7 +34,7 @@ class PatentsviewReader(BaseReader):
 
         self.json["q"]["patent_id"] = patent_number
 
-        response = requests.post(BASE_URL, json=self.json)
+        response = requests.post(BASE_URL, json=self.json, timeout=60)
 
         if response.status_code == 200:
             data = response.json()

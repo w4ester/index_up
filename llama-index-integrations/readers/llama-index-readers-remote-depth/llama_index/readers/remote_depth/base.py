@@ -74,7 +74,7 @@ class RemoteDepthReader(BaseReader):
         from bs4 import BeautifulSoup
 
         """Get all links from a page."""
-        page = requests.get(url)
+        page = requests.get(url, timeout=60)
         soup = BeautifulSoup(page.content, "html.parser")
 
         links = soup.find_all("a")

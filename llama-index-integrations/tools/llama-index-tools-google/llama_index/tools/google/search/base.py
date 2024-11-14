@@ -43,5 +43,5 @@ class GoogleSearchToolSpec(BaseToolSpec):
                 raise ValueError("num should be an integer between 1 and 10, inclusive")
             url += f"&num={self.num}"
 
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         return [Document(text=response.text)]

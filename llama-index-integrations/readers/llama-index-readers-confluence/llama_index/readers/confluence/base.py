@@ -473,7 +473,7 @@ class ConfluenceReader(BaseReader):
             )
 
         try:
-            response = requests.get(link)
+            response = requests.get(link, timeout=60)
             if response.status_code != 200:
                 return "Error fetching HTML content: HTTP Status Code {}".format(
                     response.status_code
@@ -495,7 +495,7 @@ class ConfluenceReader(BaseReader):
             )
 
         try:
-            response = requests.get(link)
+            response = requests.get(link, timeout=60)
             if response.status_code != 200:
                 return "Error fetching text content: HTTP Status Code {}".format(
                     response.status_code

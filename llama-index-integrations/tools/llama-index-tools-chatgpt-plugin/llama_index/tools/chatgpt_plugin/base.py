@@ -29,7 +29,7 @@ class ChatGPTPluginToolSpec(BaseToolSpec):
         elif manifest:
             pass
         elif manifest_url:
-            response = requests.get(manifest_url).text
+            response = requests.get(manifest_url, timeout=60).text
             manifest = yaml.safe_load(response)
         else:
             raise ValueError("You must provide either a manifest or a manifest_url")

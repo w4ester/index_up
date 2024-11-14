@@ -100,7 +100,7 @@ class PlaygroundsSubgraphInspectorToolSpec(GraphQLToolSpec):
         """
         payload = {"query": query.strip()}
         try:
-            response = requests.post(self.url, headers=self.headers, json=payload)
+            response = requests.post(self.url, headers=self.headers, json=payload, timeout=60)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:

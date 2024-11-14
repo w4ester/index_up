@@ -55,8 +55,8 @@ class ZillizCloudPipelineRetriever(BaseRetriever):
         }
 
         response = requests.post(
-            self.search_pipeline_url, headers=self.headers, json=params
-        )
+            self.search_pipeline_url, headers=self.headers, json=params, 
+        timeout=60)
         if response.status_code != 200:
             raise RuntimeError(response.text)
         response_dict = response.json()

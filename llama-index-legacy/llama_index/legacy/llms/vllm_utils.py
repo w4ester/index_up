@@ -15,7 +15,7 @@ def post_http_request(
     headers = {"User-Agent": "Test Client"}
     sampling_params["stream"] = stream
 
-    return requests.post(api_url, headers=headers, json=sampling_params, stream=True)
+    return requests.post(api_url, headers=headers, json=sampling_params, stream=True, timeout=60)
 
 
 def get_streaming_response(response: requests.Response) -> Iterable[List[str]]:

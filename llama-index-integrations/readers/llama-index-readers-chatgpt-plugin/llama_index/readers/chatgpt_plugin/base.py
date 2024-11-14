@@ -39,8 +39,8 @@ class ChatGPTRetrievalPluginReader(BaseReader):
         headers = {"Authorization": f"Bearer {self._bearer_token}"}
         queries = [{"query": query, "top_k": top_k}]
         res = requests.post(
-            f"{self._endpoint_url}/query", headers=headers, json={"queries": queries}
-        )
+            f"{self._endpoint_url}/query", headers=headers, json={"queries": queries}, 
+        timeout=60)
         documents: List[Document] = []
         for query_result in res.json()["results"]:
             for result in query_result["results"]:

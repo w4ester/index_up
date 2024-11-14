@@ -105,7 +105,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.post(
             url=authority,
             data=payload,
-        )
+        timeout=60)
 
         if response.status_code == 200 and "access_token" in response.json():
             return response.json()["access_token"]
@@ -138,7 +138,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=site_information_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
 
         if response.status_code == 200 and "value" in response.json():
             if (
@@ -174,7 +174,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=self._drive_id_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
 
         if response.status_code == 200 and "value" in response.json():
             if (
@@ -207,7 +207,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=folder_id_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
 
         if response.status_code == 200 and "id" in response.json():
             return response.json()["id"]
@@ -242,7 +242,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=folder_info_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
 
         if response.status_code == 200:
             data = response.json()
@@ -282,7 +282,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
             bytes: The content of the file.
         """
         file_download_url = item["@microsoft.graph.downloadUrl"]
-        response = requests.get(file_download_url)
+        response = requests.get(file_download_url, timeout=60)
         if response.status_code != 200:
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error_description"])
@@ -332,7 +332,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=permissions_info_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
         permissions = response.json()
 
         identity_sets = []
@@ -587,7 +587,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=folder_contents_endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
         items = response.json().get("value", [])
 
         file_paths = []
@@ -692,7 +692,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         response = requests.get(
             url=endpoint,
             headers=self._authorization_headers,
-        )
+        timeout=60)
 
         return response.json()
 

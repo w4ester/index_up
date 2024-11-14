@@ -69,7 +69,7 @@ class GuruReader(BaseReader):
         next_page = True
         initial_url = "https://api.getguru.com/api/v1/search/cardmgr?queryType=cards"
 
-        response = requests.get(initial_url, auth=self.guru_auth)
+        response = requests.get(initial_url, auth=self.guru_auth, timeout=60)
         records.extend(response.json())
 
         while next_page:
@@ -82,7 +82,7 @@ class GuruReader(BaseReader):
                 next_page = False
                 break
 
-            response = requests.get(url, auth=self.guru_auth)
+            response = requests.get(url, auth=self.guru_auth, timeout=60)
             records.extend(response.json())
 
         cards = pd.DataFrame.from_records(records)
@@ -103,7 +103,7 @@ class GuruReader(BaseReader):
         """
         url = f"https://api.getguru.com/api/v1/cards/{card_id}/extended"
         headers = {"accept": "application/json"}
-        response = requests.get(url, auth=self.guru_auth, headers=headers)
+        response = requests.get(url, auth=self.guru_auth, headers=headers, timeout=60)
 
         if response.status_code == 200:
             title = response.json()["preferredPhrase"]
@@ -147,7 +147,7 @@ class GuruReader(BaseReader):
         headers = {
             "accept": "application/json",
         }
-        response = requests.get(url, headers=headers, auth=self.guru_auth)
+        response = requests.get(url, headers=headers, auth=self.guru_auth, timeout=60)
         if response.status_code == 200:
             slug = response.json()["slug"]
         else:
