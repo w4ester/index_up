@@ -5,18 +5,18 @@ Full credits to the original authors!
 """
 
 import numpy as np
-import random
 import tiktoken
 import umap
 from sklearn.mixture import GaussianMixture
 from typing import Dict, List, Optional
 
 from llama_index.core.schema import BaseNode
+import secrets
 
 
 # Set a random seed for reproducibility
 RANDOM_SEED = 224
-random.seed(RANDOM_SEED)
+secrets.SystemRandom().seed(RANDOM_SEED)
 
 
 def global_cluster_embeddings(

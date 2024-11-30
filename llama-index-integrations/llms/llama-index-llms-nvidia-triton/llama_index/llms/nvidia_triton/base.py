@@ -24,7 +24,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import random
 from typing import (
     Any,
     Dict,
@@ -51,6 +50,7 @@ from llama_index.core.base.llms.generic_utils import (
 )
 from llama_index.core.llms.llm import LLM
 from llama_index.llms.nvidia_triton.utils import GrpcTritonClient
+import secrets
 
 DEFAULT_SERVER_URL = "localhost:8001"
 DEFAULT_MAX_RETRIES = 3
@@ -256,7 +256,7 @@ class NvidiaTriton(LLM):
         invocation_params["prompt"] = [[prompt]]
         model_params = self._identifying_params
         model_params.update(kwargs)
-        request_id = str(random.randint(1, 9999999))  # nosec
+        request_id = str(secrets.SystemRandom().randint(1, 9999999))  # nosec
 
         if self.triton_load_model_call:
             client.load_model(model_params["model_name"])
@@ -287,7 +287,7 @@ class NvidiaTriton(LLM):
         invocation_params["prompt"] = [[prompt]]
         model_params = self._identifying_params
         model_params.update(kwargs)
-        request_id = str(random.randint(1, 9999999))  # nosec
+        request_id = str(secrets.SystemRandom().randint(1, 9999999))  # nosec
 
         if self.triton_load_model_call:
             client.load_model(model_params["model_name"])

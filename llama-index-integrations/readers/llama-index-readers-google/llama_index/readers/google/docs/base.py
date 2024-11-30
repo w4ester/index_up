@@ -2,7 +2,6 @@
 
 import logging
 import os
-import random
 import string
 from typing import Any, List, Optional
 
@@ -15,6 +14,7 @@ from llama_index.core.schema import Document
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+import secrets
 
 SCOPES = ["https://www.googleapis.com/auth/documents.readonly"]
 
@@ -188,7 +188,7 @@ class GoogleDocsReader(BasePydanticReader):
             heading_id = metadata["heading_id"]
         else:
             heading_id = "".join(
-                random.choices(string.ascii_letters + string.digits, k=8)
+                secrets.SystemRandom().choices(string.ascii_letters + string.digits, k=8)
             )
         return f"{metadata['document_id']}_{heading_id}"
 

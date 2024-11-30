@@ -1,10 +1,10 @@
 """Test simple web reader."""
 
 import string
-from random import choice
 
 import pytest
 from llama_index.legacy.readers import SimpleWebPageReader
+import secrets
 
 try:
     import html2text
@@ -22,8 +22,8 @@ def test_error_40x() -> None:
         reader.load_data(
             [
                 url_that_doesnt_exist.format(
-                    url="".join(choice(string.ascii_lowercase) for _ in range(10)),
-                    tld="".join(choice(string.ascii_lowercase) for _ in range(3)),
+                    url="".join(secrets.choice(string.ascii_lowercase) for _ in range(10)),
+                    tld="".join(secrets.choice(string.ascii_lowercase) for _ in range(3)),
                 )
             ]
         )
