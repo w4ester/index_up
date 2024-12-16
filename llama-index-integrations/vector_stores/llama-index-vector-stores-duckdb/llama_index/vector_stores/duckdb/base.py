@@ -298,10 +298,10 @@ class DuckDBVectorStore(BasePydanticVectorStore):
         """
         _ddb_query = f"""
             DELETE FROM {self.table_name}
-            WHERE json_extract_string(metadata_, '$.ref_doc_id') = '{ref_doc_id}';
+            WHERE json_extract_string(metadata_, '$.ref_doc_id') = ?;
             """
         if self.database_name == ":memory:":
-            self._conn.execute(_ddb_query)
+            self._conn.execute(_ddb_query, (ref_doc_id, ))
         else:
             with DuckDBLocalContext(self._database_path) as _conn:
                 _conn.execute(_ddb_query)
