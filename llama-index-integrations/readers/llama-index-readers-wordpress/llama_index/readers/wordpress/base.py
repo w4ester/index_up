@@ -4,6 +4,7 @@ from typing import List
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class WordpressReader(BaseReader):
@@ -73,11 +74,10 @@ class WordpressReader(BaseReader):
         return posts
 
     def get_posts_page(self, current_page: int = 1):
-        import requests
 
         url = f"{self.url}/wp-json/wp/v2/posts?per_page=100&page={current_page}"
 
-        response = requests.get(url)
+        response = safe_requests.get(url)
         headers = response.headers
 
         if "X-WP-TotalPages" in headers:

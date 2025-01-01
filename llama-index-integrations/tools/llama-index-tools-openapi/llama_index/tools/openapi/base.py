@@ -1,10 +1,9 @@
 """OpenAPI Tool."""
 
 from typing import List, Optional
-
-import requests
 from llama_index.core.schema import Document
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 
 class OpenAPIToolSpec(BaseToolSpec):
@@ -24,7 +23,7 @@ class OpenAPIToolSpec(BaseToolSpec):
         elif spec:
             pass
         elif url:
-            response = requests.get(url).text
+            response = safe_requests.get(url).text
             spec = yaml.safe_load(response)
         else:
             raise ValueError("You must provide a url or OpenAPI spec as a dict")

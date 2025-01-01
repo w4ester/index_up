@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List, Optional, Union
 import re
 import pandas as pd
-import requests
 import sqlite3
 import tempfile
 from llama_index.packs.docugami_kg_rag.config import REPORT_DIRECTORY, DOCUGAMI_API_KEY
@@ -13,6 +12,7 @@ from docugami import Docugami
 from llama_index.core import SQLDatabase
 from llama_index.core.query_engine import NLSQLTableQueryEngine
 from llama_index.core.tools import BaseTool, QueryEngineTool, ToolMetadata
+from security import safe_requests
 
 HEADERS = {"Authorization": f"Bearer {DOCUGAMI_API_KEY}"}
 
@@ -75,7 +75,7 @@ def report_details_to_report_query_tool_description(name: str, table_info: str) 
 
 
 def download_project_latest_xlsx(project_url: str, local_xlsx: Path) -> Optional[Path]:
-    response = requests.get(
+    response = safe_requests.get(
         f"{project_url}/artifacts/latest?name=spreadsheet.xlsx",
         headers=HEADERS,
     )
@@ -92,7 +92,7 @@ def download_project_latest_xlsx(project_url: str, local_xlsx: Path) -> Optional
         )
         if xlsx_artifact:
             artifact_id = xlsx_artifact["id"]
-            response = requests.get(
+            response = safe_requests.get(
                 f"{project_url}/artifacts/latest/{artifact_id}/content",
                 headers=HEADERS,
             )

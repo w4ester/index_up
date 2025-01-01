@@ -1,10 +1,10 @@
 # YoutubeMetaData.py
 # Class to return Youtube Meta data for a video ID
-import requests
 from pydantic import Field
 from typing import Any, List, Dict
 from youtube_transcript_api import YouTubeTranscriptApi
 from llama_index.core.readers.base import BasePydanticReader
+from security import safe_requests
 
 
 class YouTubeMetaData(BasePydanticReader):
@@ -22,7 +22,7 @@ class YouTubeMetaData(BasePydanticReader):
         for chunk in video_id_chunks:
             videos_string = ",".join(chunk)
             url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id={videos_string}&key={self.api_key}"
-            response = requests.get(url).json()
+            response = safe_requests.get(url).json()
             if "items" not in response:
                 print("Error in API response:", response)
                 continue

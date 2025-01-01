@@ -1,4 +1,3 @@
-import requests
 from packaging import version
 from typing import Sequence, Union, List, Optional
 from llama_index.core.base.llms.types import (
@@ -8,11 +7,12 @@ from llama_index.core.base.llms.types import (
 from text_generation.types import (
     Message,
 )
+from security import safe_requests
 
 
 def resolve_tgi_function_call(url: str) -> bool:
     url = f"{url}/info"
-    model_info = dict(requests.get(url).json())
+    model_info = dict(safe_requests.get(url).json())
     tgi_version = model_info.get("version", None)
     if version.parse(tgi_version) >= version.parse("2.0.1"):
         return True
@@ -26,7 +26,7 @@ def resolve_tgi_function_call(url: str) -> bool:
 
 def get_max_input_length(url: str) -> Union[int, None]:
     url = f"{url}/info"
-    model_info = dict(requests.get(url).json())
+    model_info = dict(safe_requests.get(url).json())
     return model_info.get("max_input_length", None)
 
 

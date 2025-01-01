@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 DATA_KEY = "data"
 ERRORS_KEY = "errors"
@@ -227,7 +228,7 @@ def is_valid_html(content: str) -> bool:
 
     if is_url(content):
         try:
-            response = requests.get(content)
+            response = safe_requests.get(content)
             if response.status_code == 200:
                 html_content = response.text
                 return (
@@ -268,7 +269,7 @@ def clean_html(text: str) -> str:
     if isinstance(text, str):
         try:
             if is_url(text):
-                response = requests.get(text)
+                response = safe_requests.get(text)
                 if response.status_code == 200:
                     html_content = response.text
                     soup = BeautifulSoup(html_content, "lxml")

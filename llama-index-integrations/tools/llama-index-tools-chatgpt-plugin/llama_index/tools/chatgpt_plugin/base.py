@@ -1,11 +1,10 @@
 """ChatGPT Plugiun Tool."""
 
 from typing import List, Optional
-
-import requests
 from llama_index.core.schema import Document
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
 from llama_index.tools.openapi.base import OpenAPIToolSpec
+from security import safe_requests
 
 
 class ChatGPTPluginToolSpec(BaseToolSpec):
@@ -29,7 +28,7 @@ class ChatGPTPluginToolSpec(BaseToolSpec):
         elif manifest:
             pass
         elif manifest_url:
-            response = requests.get(manifest_url).text
+            response = safe_requests.get(manifest_url).text
             manifest = yaml.safe_load(response)
         else:
             raise ValueError("You must provide either a manifest or a manifest_url")

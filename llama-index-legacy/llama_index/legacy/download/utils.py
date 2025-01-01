@@ -1,19 +1,18 @@
 import os
 from pathlib import Path
 from typing import List, Optional, Tuple
-
-import requests
+from security import safe_requests
 
 
 def get_file_content(url: str, path: str) -> Tuple[str, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(url + path)
+    resp = safe_requests.get(url + path)
     return resp.text, resp.status_code
 
 
 def get_file_content_bytes(url: str, path: str) -> Tuple[bytes, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(url + path)
+    resp = safe_requests.get(url + path)
     return resp.content, resp.status_code
 
 

@@ -4,13 +4,13 @@ from io import BytesIO
 from typing import Any, Dict, List, Tuple
 
 import matplotlib.pyplot as plt
-import requests
 from IPython.display import Markdown, display
 from llama_index.core.base.response.schema import Response
 from llama_index.core.img_utils import b64_2_img
 from llama_index.core.schema import ImageNode, MetadataMode, NodeWithScore
 from llama_index.core.utils import truncate_text
 from PIL import Image
+from security import safe_requests
 
 DEFAULT_THUMBNAIL_SIZE = (512, 512)
 DEFAULT_IMAGE_MATRIX = (3, 3)
@@ -124,7 +124,7 @@ def display_query_and_multimodal_response(
         img_node = scored_img_node.node
         image = None
         if img_node.image_url:
-            img_response = requests.get(img_node.image_url)
+            img_response = safe_requests.get(img_node.image_url)
             image = Image.open(BytesIO(img_response.content))
         elif img_node.image_path:
             image = Image.open(img_node.image_path).convert("RGB")
