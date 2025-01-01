@@ -16,6 +16,7 @@ from llama_index.core.readers.base import (
 )
 from llama_index.core.schema import Document
 from llama_index.core.bridge.pydantic import PrivateAttr, Field
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -135,7 +136,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         )
         self._authorization_headers = {"Authorization": f"Bearer {access_token}"}
 
-        response = requests.get(
+        response = safe_requests.get(
             url=site_information_endpoint,
             headers=self._authorization_headers,
         )
@@ -171,7 +172,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
 
         self._drive_id_endpoint = f"https://graph.microsoft.com/v1.0/sites/{self._site_id_with_host_name}/drives"
 
-        response = requests.get(
+        response = safe_requests.get(
             url=self._drive_id_endpoint,
             headers=self._authorization_headers,
         )
@@ -204,7 +205,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
             f"{self._drive_id_endpoint}/{self._drive_id}/root:/{folder_path}"
         )
 
-        response = requests.get(
+        response = safe_requests.get(
             url=folder_id_endpoint,
             headers=self._authorization_headers,
         )
@@ -239,7 +240,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
             f"{self._drive_id_endpoint}/{self._drive_id}/items/{folder_id}/children"
         )
 
-        response = requests.get(
+        response = safe_requests.get(
             url=folder_info_endpoint,
             headers=self._authorization_headers,
         )
@@ -282,7 +283,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
             bytes: The content of the file.
         """
         file_download_url = item["@microsoft.graph.downloadUrl"]
-        response = requests.get(file_download_url)
+        response = safe_requests.get(file_download_url)
         if response.status_code != 200:
             logger.error(response.json()["error"])
             raise ValueError(response.json()["error_description"])
@@ -329,7 +330,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         permissions_info_endpoint = (
             f"{self._drive_id_endpoint}/{self._drive_id}/items/{item_id}/permissions"
         )
-        response = requests.get(
+        response = safe_requests.get(
             url=permissions_info_endpoint,
             headers=self._authorization_headers,
         )
@@ -584,7 +585,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         folder_contents_endpoint = (
             f"{self._drive_id_endpoint}/{self._drive_id}/items/{folder_id}/children"
         )
-        response = requests.get(
+        response = safe_requests.get(
             url=folder_contents_endpoint,
             headers=self._authorization_headers,
         )
@@ -689,7 +690,7 @@ class SharePointReader(BasePydanticReader, ResourcesReaderMixin, FileSystemReade
         )
         endpoint = f"{self._drive_id_endpoint}/{self._drive_id}/root:/{file_path}"
 
-        response = requests.get(
+        response = safe_requests.get(
             url=endpoint,
             headers=self._authorization_headers,
         )

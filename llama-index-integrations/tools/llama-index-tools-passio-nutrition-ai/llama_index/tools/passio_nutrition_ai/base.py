@@ -2,9 +2,8 @@
 
 from typing import final, NoReturn
 from datetime import datetime, timedelta
-
-import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 ENDPOINT_BASE_URL = "https://api.passiolife.com/v2/products/napi/food/search/advanced"
 
@@ -84,7 +83,7 @@ class ManagedPassioLifeAuth(NoDiskStorage):
         wait=wait_random(0, 0.3) + wait_exponential(multiplier=1, min=0.1, max=2),
     )
     def _http_get(self, subscription_key):
-        return requests.get(
+        return safe_requests.get(
             f"https://api.passiolife.com/v2/token-cache/napi/oauth/token/{subscription_key}"
         )
 
@@ -119,7 +118,7 @@ class NutritionAIToolSpec(BaseToolSpec):
         wait=wait_random(0, 0.3) + wait_exponential(multiplier=1, min=0.1, max=2),
     )
     def _http_get(self, query: str):
-        return requests.get(
+        return safe_requests.get(
             ENDPOINT_BASE_URL,
             headers=self.auth_.headers,
             params={"term": query},  # type: ignore

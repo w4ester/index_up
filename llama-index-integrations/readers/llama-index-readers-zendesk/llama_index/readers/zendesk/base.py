@@ -4,6 +4,7 @@ from typing import List
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class ZendeskReader(BaseReader):
@@ -71,14 +72,13 @@ class ZendeskReader(BaseReader):
         return articles
 
     def get_articles_page(self, next_page: str = None):
-        import requests
 
         if next_page is None:
             url = f"https://{self.zendesk_subdomain}.zendesk.com/api/v2/help_center/{self.locale}/articles?per_page=100"
         else:
             url = next_page
 
-        response = requests.get(url)
+        response = safe_requests.get(url)
 
         response_json = json.loads(response.text)
 

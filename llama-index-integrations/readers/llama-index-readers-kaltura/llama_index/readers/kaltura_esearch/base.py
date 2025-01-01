@@ -3,10 +3,9 @@
 import json
 import logging
 from typing import Any, Dict, List, Optional
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -169,7 +168,7 @@ class KalturaESearchReader(BaseReader):
             cap_json_url = self.client.caption.captionAsset.serveAsJson(
                 caption_asset_id
             )
-            return requests.get(cap_json_url).json()
+            return safe_requests.get(cap_json_url).json()
         except Exception as e:
             logger.error(f"An error occurred while getting captions: {e}")
             return {}

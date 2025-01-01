@@ -3,10 +3,9 @@
 import datetime
 import json
 from typing import List, Optional
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 def _get_readwise_data(api_key: str, updated_after: Optional[datetime.datetime] = None):
@@ -21,7 +20,7 @@ def _get_readwise_data(api_key: str, updated_after: Optional[datetime.datetime] 
     result = []
     next_page = None
     while True:
-        response = requests.get(
+        response = safe_requests.get(
             url="https://readwise.io/api/v2/export/",
             params={
                 "pageCursor": next_page,

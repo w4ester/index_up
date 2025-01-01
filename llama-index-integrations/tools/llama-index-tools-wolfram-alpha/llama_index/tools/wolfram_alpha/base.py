@@ -2,9 +2,8 @@
 
 import urllib.parse
 from typing import Optional
-
-import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 QUERY_URL_TMPL = "http://api.wolframalpha.com/v1/result?appid={app_id}&i={query}"
 
@@ -30,7 +29,7 @@ class WolframAlphaToolSpec(BaseToolSpec):
             query (str): The query to be passed to wolfram alpha.
 
         """
-        response = requests.get(
+        response = safe_requests.get(
             QUERY_URL_TMPL.format(
                 app_id=self.token, query=urllib.parse.quote_plus(query)
             )

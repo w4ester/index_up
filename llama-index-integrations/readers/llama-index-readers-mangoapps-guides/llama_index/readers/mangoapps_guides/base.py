@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class MangoppsGuidesReader(BaseReader):
@@ -25,7 +26,6 @@ class MangoppsGuidesReader(BaseReader):
         Returns:
             List[Document]: List of documents.
         """
-        import requests
         from bs4 import BeautifulSoup
 
         self.domain_url = domain_url
@@ -39,7 +39,7 @@ class MangoppsGuidesReader(BaseReader):
         guides_pages = {}
         for url in fetched_urls:
             try:
-                response = requests.get(url)
+                response = safe_requests.get(url)
                 soup = BeautifulSoup(response.content, "html.parser")
 
                 page_title = soup.find("title").text
@@ -110,10 +110,9 @@ class MangoppsGuidesReader(BaseReader):
 
     def fetch_url(self, url):
         """Fetch the urls from given domain."""
-        import requests
         from bs4 import BeautifulSoup
 
-        response = requests.get(url)
+        response = safe_requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
 
         self.visited.append(url)

@@ -7,6 +7,7 @@ from typing import List
 import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 # Copyright (2023) Bytedance Ltd. and/or its affiliates
 #
@@ -82,7 +83,7 @@ class FeishuWikiReader(BaseReader):
         if parent_node_token:
             url += f"?parent_node_token={parent_node_token}"
         try:
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
             result = response.json()
         except Exception:
             return []
@@ -116,7 +117,7 @@ class FeishuWikiReader(BaseReader):
             "Content-Type": "application/json; charset=utf-8",
         }
         try:
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
             result = response.json()
         except Exception:
             return None

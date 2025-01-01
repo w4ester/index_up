@@ -10,6 +10,7 @@ from typing import List
 import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ class MangaDexReader(BaseReader):
 
     def _get_manga_info(self, title: str):
         try:
-            manga_response = requests.get(
+            manga_response = safe_requests.get(
                 f"{self.base_url}/manga", params={"title": title}
             )
             manga_response.raise_for_status()
@@ -40,7 +41,7 @@ class MangaDexReader(BaseReader):
     # Authors and artists are combined
     def _get_manga_author(self, id: str):
         try:
-            author_response = requests.get(
+            author_response = safe_requests.get(
                 f"{self.base_url}/author", params={"ids[]": [id]}
             )
             author_response.raise_for_status()
@@ -53,7 +54,7 @@ class MangaDexReader(BaseReader):
 
     def _get_manga_chapters(self, manga_id: str, lang: str):
         try:
-            chapter_response = requests.get(
+            chapter_response = safe_requests.get(
                 f"{self.base_url}/manga/{manga_id}/feed",
                 params={
                     "translatedLanguage[]": [lang],

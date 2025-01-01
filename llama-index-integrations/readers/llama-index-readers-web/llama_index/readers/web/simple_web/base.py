@@ -1,11 +1,10 @@
 """Simple Web scraper."""
 from typing import List, Optional, Dict, Callable
 
-import requests
-
 from llama_index.core.bridge.pydantic import PrivateAttr
 from llama_index.core.readers.base import BasePydanticReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class SimpleWebPageReader(BasePydanticReader):
@@ -59,7 +58,7 @@ class SimpleWebPageReader(BasePydanticReader):
             raise ValueError("urls must be a list of strings.")
         documents = []
         for url in urls:
-            response = requests.get(url, headers=None).text
+            response = safe_requests.get(url, headers=None).text
             if self.html_to_text:
                 import html2text
 

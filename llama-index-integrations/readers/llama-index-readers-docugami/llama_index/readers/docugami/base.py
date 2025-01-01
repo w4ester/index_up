@@ -14,6 +14,7 @@ from llama_index.core.schema import Document
 
 from dgml_utils.models import Chunk
 from dgml_utils.segmentation import get_chunks
+from security import safe_requests
 
 TABLE_NAME = "{http://www.w3.org/1999/xhtml}table"
 
@@ -215,7 +216,7 @@ class DocugamiReader(BaseReader):
         all_documents = []
 
         while url:
-            response = requests.get(
+            response = safe_requests.get(
                 url,
                 headers={"Authorization": f"Bearer {self.access_token}"},
             )

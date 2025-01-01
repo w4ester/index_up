@@ -1,10 +1,9 @@
 """dad_jokes reader."""
 
 from typing import List
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class DadJokesReader(BaseReader):
@@ -15,7 +14,7 @@ class DadJokesReader(BaseReader):
     """
 
     def _get_random_dad_joke(self):
-        response = requests.get(
+        response = safe_requests.get(
             "https://icanhazdadjoke.com/", headers={"Accept": "application/json"}
         )
         response.raise_for_status()

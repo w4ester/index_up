@@ -7,10 +7,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from functools import wraps
 from typing import List, Optional
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +71,7 @@ def rate_limited_get(url, headers):
     Note that exactly what response an application gets (in terms of HTTP code, text, and so on)
     is undefined when subject to this ban; we consider > 30 request/sec per IP to be very abusive and thus cut the requests off very harshly.
     """
-    resp = requests.get(url, headers=headers)
+    resp = safe_requests.get(url, headers=headers)
     if resp.status_code == 429:
         logger.warning("Rate limited, sleeping for 5 minutes")
         time.sleep(300)

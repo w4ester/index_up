@@ -1,6 +1,7 @@
 from typing import Optional
 
 import requests
+from security import safe_requests
 
 DEFAULT_HUGGINGFACE_EMBEDDING_MODEL = "BAAI/bge-small-en"
 DEFAULT_INSTRUCT_MODEL = "hkunlp/instructor-base"
@@ -82,7 +83,7 @@ def get_pooling_mode(model_name: Optional[str]) -> str:
     )
 
     try:
-        response = requests.get(pooling_config_url)
+        response = safe_requests.get(pooling_config_url)
         config_data = response.json()
 
         cls_token = config_data.get("pooling_mode_cls_token", False)

@@ -3,6 +3,7 @@ import urllib.parse
 from typing import Dict
 from llama_index.core.schema import Document
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 SEARCH_URL_TMPL = "https://api.search.brave.com/res/v1/web/search?{params}"
 
@@ -37,7 +38,7 @@ class BraveSearchToolSpec(BaseToolSpec):
         }
         url = SEARCH_URL_TMPL.format(params=urllib.parse.urlencode(params))
 
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
         response.raise_for_status()
         return response
 

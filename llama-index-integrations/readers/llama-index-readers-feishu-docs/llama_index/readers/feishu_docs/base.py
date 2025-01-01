@@ -7,6 +7,7 @@ from typing import List
 import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 # Copyright (2023) Bytedance Ltd. and/or its affiliates
 #
@@ -81,7 +82,7 @@ class FeishuDocsReader(BaseReader):
             "Authorization": f"Bearer {self.tenant_access_token}",
             "Content-Type": "application/json; charset=utf-8",
         }
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
         return response.json()["data"]["content"]
 
     def _update_tenant_access_token(self):
