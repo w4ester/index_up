@@ -485,7 +485,7 @@ class ImageNode(TextNode):
             # load image from URL
             import requests
 
-            response = requests.get(self.image_url)
+            response = requests.get(self.image_url, timeout=60)
             return BytesIO(response.content)
         else:
             raise ValueError("No image found in node.")

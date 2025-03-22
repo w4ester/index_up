@@ -30,7 +30,7 @@ class BilibiliTranscriptReader(BaseReader):
         sub_list = video_info["subtitle"]["list"]
         if sub_list:
             sub_url = sub_list[0]["subtitle_url"]
-            result = requests.get(sub_url)
+            result = requests.get(sub_url, timeout=60)
             raw_sub_titles = json.loads(result.content)["body"]
             raw_transcript = " ".join([c["content"] for c in raw_sub_titles])
             # Add basic video info to transcript

@@ -196,7 +196,7 @@ class Maritalk(LLM):
 
         headers = {"authorization": f"Key {self.api_key}"}
 
-        response = requests.post(self._endpoint, json=data, headers=headers)
+        response = requests.post(self._endpoint, json=data, headers=headers, timeout=60)
 
         if response.ok:
             answer = response.json().get("answer", "No answer found")
@@ -285,8 +285,8 @@ class Maritalk(LLM):
 
         def gen() -> ChatResponseGen:
             response = requests.post(
-                self._endpoint, json=data, headers=headers, stream=True
-            )
+                self._endpoint, json=data, headers=headers, stream=True, 
+            timeout=60)
             if response.ok:
                 content = ""
                 for line in response.iter_lines():

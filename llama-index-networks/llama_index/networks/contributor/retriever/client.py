@@ -49,8 +49,8 @@ class ContributorRetrieverClient(BaseRetriever):
         data = {"query": query_bundle.query_str, "api_key": self.config.api_key}
         data.update(additional_data)
         result = requests.post(
-            self.config.api_url + "/api/retrieve", json=data, headers=headers
-        )
+            self.config.api_url + "/api/retrieve", json=data, headers=headers, 
+        timeout=60)
         try:
             contributor_response = ContributorRetrieverResponse.parse_obj(result.json())
         except Exception as e:

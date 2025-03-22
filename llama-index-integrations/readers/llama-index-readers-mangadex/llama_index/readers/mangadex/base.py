@@ -21,8 +21,8 @@ class MangaDexReader(BaseReader):
     def _get_manga_info(self, title: str):
         try:
             manga_response = requests.get(
-                f"{self.base_url}/manga", params={"title": title}
-            )
+                f"{self.base_url}/manga", params={"title": title}, 
+            timeout=60)
             manga_response.raise_for_status()
             manga_data = manga_response.json()["data"]
 
@@ -41,8 +41,8 @@ class MangaDexReader(BaseReader):
     def _get_manga_author(self, id: str):
         try:
             author_response = requests.get(
-                f"{self.base_url}/author", params={"ids[]": [id]}
-            )
+                f"{self.base_url}/author", params={"ids[]": [id]}, 
+            timeout=60)
             author_response.raise_for_status()
             return author_response.json()["data"][0]
         except requests.exceptions.HTTPError as http_error:
@@ -59,7 +59,7 @@ class MangaDexReader(BaseReader):
                     "translatedLanguage[]": [lang],
                     "order[chapter]": "asc",
                 },
-            )
+            timeout=60)
             chapter_response.raise_for_status()
             return chapter_response.json()
         except requests.exceptions.HTTPError as http_error:

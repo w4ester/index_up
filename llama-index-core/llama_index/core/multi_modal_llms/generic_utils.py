@@ -41,7 +41,7 @@ def image_documents_to_base64(
         ):
             image_encodings.append(encode_image(image_document.metadata["file_path"]))
         elif image_document.image_url:
-            response = requests.get(image_document.image_url)
+            response = requests.get(image_document.image_url, timeout=60)
             try:
                 image_encodings.append(
                     base64.b64encode(response.content).decode("utf-8")

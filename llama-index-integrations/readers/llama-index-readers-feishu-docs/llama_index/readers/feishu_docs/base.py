@@ -81,7 +81,7 @@ class FeishuDocsReader(BaseReader):
             "Authorization": f"Bearer {self.tenant_access_token}",
             "Content-Type": "application/json; charset=utf-8",
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
         return response.json()["data"]["content"]
 
     def _update_tenant_access_token(self):
@@ -89,7 +89,7 @@ class FeishuDocsReader(BaseReader):
         url = self.host + self.tenant_access_token_internal_url_path
         headers = {"Content-Type": "application/json; charset=utf-8"}
         data = {"app_id": self.app_id, "app_secret": self.app_secret}
-        response = requests.post(url, data=json.dumps(data), headers=headers)
+        response = requests.post(url, data=json.dumps(data), headers=headers, timeout=60)
         self.tenant_access_token = response.json()["tenant_access_token"]
         self.expire = time.time() + response.json()["expire"]
 

@@ -19,7 +19,7 @@ def get_earnings_history(api_key: Dict[str, str], symbol: str) -> pd.DataFrame:
     response = requests.request(
         "GET",
         f"https://www.alphavantage.co/query?function=EARNINGS&symbol={symbol}&apikey={ALPHA_VANTAGE_API_KEY}",
-    )
+    timeout=60)
     if response.status_code != 200:
         return earnings_df
 

@@ -37,7 +37,7 @@ class BraveSearchToolSpec(BaseToolSpec):
         }
         url = SEARCH_URL_TMPL.format(params=urllib.parse.urlencode(params))
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
         response.raise_for_status()
         return response
 

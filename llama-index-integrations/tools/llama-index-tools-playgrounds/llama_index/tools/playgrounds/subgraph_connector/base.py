@@ -63,7 +63,7 @@ class PlaygroundsSubgraphConnectorToolSpec(GraphQLToolSpec):
             payload["operationName"] = operation_name
 
         try:
-            response = requests.post(self.url, headers=self.headers, json=payload)
+            response = requests.post(self.url, headers=self.headers, json=payload, timeout=60)
 
             # Check if the request was successful
             response.raise_for_status()

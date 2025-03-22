@@ -53,7 +53,7 @@ class MondayReader(BaseReader):
         )
         data = {"query": query}
 
-        response = requests.post(url=self.api_url, json=data, headers=headers)
+        response = requests.post(url=self.api_url, json=data, headers=headers, timeout=60)
         return response.json()
 
     def load_data(self, board_id: int) -> List[Document]:

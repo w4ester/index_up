@@ -167,7 +167,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
             }
         }
 
-        response = requests.post(api_url, headers=headers, json=body)
+        response = requests.post(api_url, headers=headers, json=body, timeout=60)
         response.raise_for_status()
         response_json = response.json()
         if "properties" in response_json:
@@ -232,7 +232,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
 
         files = [("file", (remote_file_path, data, "application/octet-stream"))]
 
-        response = requests.request("POST", api_url, headers=headers, files=files)
+        response = requests.request("POST", api_url, headers=headers, files=files, timeout=60)
         response.raise_for_status()
 
         response_json = response.json()
@@ -264,7 +264,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
             "Authorization": f"Bearer {access_token}",
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = requests.get(api_url, headers=headers, timeout=60)
         response.raise_for_status()
 
         if local_file_path:
@@ -286,7 +286,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
             "Authorization": f"Bearer {access_token}",
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = requests.get(api_url, headers=headers, timeout=60)
         response.raise_for_status()
 
         response_json = response.json()

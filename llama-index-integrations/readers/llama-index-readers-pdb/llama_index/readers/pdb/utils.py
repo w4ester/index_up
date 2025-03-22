@@ -7,8 +7,8 @@ def get_pdb_publications_from_rcsb(pdb_id: str) -> List[Dict]:
     base_url = "https://data.rcsb.org/rest/v1/core/"
     pubmed_query = f"{base_url}pubmed/{pdb_id}"
     entry_query = f"{base_url}entry/{pdb_id}"
-    pubmed_response = requests.get(pubmed_query)
-    entry_response = requests.get(entry_query)
+    pubmed_response = requests.get(pubmed_query, timeout=60)
+    entry_response = requests.get(entry_query, timeout=60)
     if pubmed_response.status_code != 200:
         raise Exception(
             f"RCSB API call (pubmed) for {pdb_id} failed with status code: {pubmed_response.status_code}"
@@ -35,7 +35,7 @@ def parse_rcsb_publication_dict(entry_response: Dict, pubmed_response: Dict):
 def get_pdb_publications_from_ebi(pdb_id: str) -> List[Dict]:
     pdb_id = str.lower(pdb_id)
     base_url = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/publications/"
-    response = requests.get(f"{base_url}{pdb_id}")
+    response = requests.get(f"{base_url}{pdb_id}", timeout=60)
     if response.status_code != 200:
         raise Exception(
             f"EBI API call for ({pdb_id}) failed with status code: {response.status_code}"

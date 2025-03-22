@@ -37,7 +37,7 @@ class MemosReader(BaseReader):
             realUrl = urljoin(self._memoUrl, "all", False)
 
         try:
-            req = requests.get(realUrl, params)
+            req = requests.get(realUrl, params, timeout=60)
             res = req.json()
         except ValueError:
             raise ValueError("Your Memo URL is not valid")

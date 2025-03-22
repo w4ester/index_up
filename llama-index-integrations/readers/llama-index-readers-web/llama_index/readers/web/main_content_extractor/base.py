@@ -37,7 +37,7 @@ class MainContentExtractorReader(BaseReader):
 
         documents = []
         for url in urls:
-            response = requests.get(url).text
+            response = requests.get(url, timeout=60).text
             response = MainContentExtractor.extract(
                 response, output_format=self.text_format, include_links=False
             )

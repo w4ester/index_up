@@ -39,7 +39,7 @@ class AzureCVToolSpec(BaseToolSpec):
             f'{self.cv_url}?features={",".join(features)}&language={self.language}&api-version={self.api_version}',
             headers={"Ocp-Apim-Subscription-Key": self.api_key},
             json={"url": url},
-        )
+        timeout=60)
         response_json = response.json()
         if "read" in features:
             response_json["readResult"] = response_json["readResult"]["content"]

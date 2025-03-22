@@ -69,7 +69,7 @@ class HatenaBlogReader(BaseReader):
         articles: List[Article] = []
         next_page = None
 
-        res = requests.get(url, auth=HTTPBasicAuth(self.username, self.api_key))
+        res = requests.get(url, auth=HTTPBasicAuth(self.username, self.api_key), timeout=60)
         soup = BeautifulSoup(res.text, "xml")
         for entry in soup.find_all("entry"):
             if entry.find("app:control").find("app:draft").string == "yes":
