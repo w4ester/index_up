@@ -6,11 +6,11 @@ import warnings
 from typing import Any, List, Optional
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from requests.auth import HTTPBasicAuth
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +69,7 @@ class GuruReader(BaseReader):
         next_page = True
         initial_url = "https://api.getguru.com/api/v1/search/cardmgr?queryType=cards"
 
-        response = requests.get(initial_url, auth=self.guru_auth)
+        response = safe_requests.get(initial_url, auth=self.guru_auth)
         records.extend(response.json())
 
         while next_page:
@@ -82,7 +82,7 @@ class GuruReader(BaseReader):
                 next_page = False
                 break
 
-            response = requests.get(url, auth=self.guru_auth)
+            response = safe_requests.get(url, auth=self.guru_auth)
             records.extend(response.json())
 
         cards = pd.DataFrame.from_records(records)
@@ -103,7 +103,7 @@ class GuruReader(BaseReader):
         """
         url = f"https://api.getguru.com/api/v1/cards/{card_id}/extended"
         headers = {"accept": "application/json"}
-        response = requests.get(url, auth=self.guru_auth, headers=headers)
+        response = safe_requests.get(url, auth=self.guru_auth, headers=headers)
 
         if response.status_code == 200:
             title = response.json()["preferredPhrase"]
@@ -147,7 +147,7 @@ class GuruReader(BaseReader):
         headers = {
             "accept": "application/json",
         }
-        response = requests.get(url, headers=headers, auth=self.guru_auth)
+        response = safe_requests.get(url, headers=headers, auth=self.guru_auth)
         if response.status_code == 200:
             slug = response.json()["slug"]
         else:

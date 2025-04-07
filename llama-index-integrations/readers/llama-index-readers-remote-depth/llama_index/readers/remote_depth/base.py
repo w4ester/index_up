@@ -3,11 +3,10 @@
 A loader that fetches any remote page or file by URL and retrieves child pages with certain constraints. The class also parses the contents of each page and provides access to the parsed data.
 """
 from typing import Any, Dict, List, Optional, Union
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from llama_index.readers.remote import RemoteReader
+from security import safe_requests
 
 
 class RemoteDepthReader(BaseReader):
@@ -74,7 +73,7 @@ class RemoteDepthReader(BaseReader):
         from bs4 import BeautifulSoup
 
         """Get all links from a page."""
-        page = requests.get(url)
+        page = safe_requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
 
         links = soup.find_all("a")

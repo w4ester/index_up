@@ -5,6 +5,7 @@ from typing import Optional
 
 import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 ACTION_URL_TMPL = "https://nla.zapier.com/api/v1/dynamic/exposed/{action_id}/execute/"
 
@@ -57,7 +58,7 @@ class ZapierToolSpec(BaseToolSpec):
             self.spec_functions.append(action_name)
 
     def list_actions(self):
-        response = requests.get(
+        response = safe_requests.get(
             "https://nla.zapier.com/api/v1/dynamic/exposed/", headers=self._headers
         )
         return response.text

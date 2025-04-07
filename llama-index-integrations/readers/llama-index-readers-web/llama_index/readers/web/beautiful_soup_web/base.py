@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 from llama_index.core.bridge.pydantic import PrivateAttr
 from llama_index.core.readers.base import BasePydanticReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,6 @@ def _substack_reader(soup: Any, **kwargs) -> Tuple[str, Dict[str, Any]]:
 
 def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadTheDocs documentation site."""
-    import requests
     from bs4 import BeautifulSoup
 
     links = soup.find_all("a", {"class": "reference internal"})
@@ -38,7 +38,7 @@ def _readthedocs_reader(soup: Any, url: str, **kwargs) -> Tuple[str, Dict[str, A
 
     texts = []
     for doc_link in rtd_links:
-        page_link = requests.get(doc_link)
+        page_link = safe_requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = soup.find(attrs={"role": "main"}).get_text()
@@ -54,7 +54,6 @@ def _readmedocs_reader(
     soup: Any, url: str, include_url_in_text: bool = True
 ) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site."""
-    import requests
     from bs4 import BeautifulSoup
 
     links = soup.find_all("a")
@@ -66,7 +65,7 @@ def _readmedocs_reader(
 
     texts = []
     for doc_link in docs_links:
-        page_link = requests.get(doc_link)
+        page_link = safe_requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = ""
@@ -96,7 +95,6 @@ def _gitbook_reader(
     soup: Any, url: str, include_url_in_text: bool = True
 ) -> Tuple[str, Dict[str, Any]]:
     """Extract text from a ReadMe documentation site."""
-    import requests
     from bs4 import BeautifulSoup
 
     links = soup.find_all("a")
@@ -108,7 +106,7 @@ def _gitbook_reader(
 
     texts = []
     for doc_link in docs_links:
-        page_link = requests.get(doc_link)
+        page_link = safe_requests.get(doc_link)
         soup = BeautifulSoup(page_link.text, "html.parser")
         try:
             text = ""
@@ -175,14 +173,12 @@ class BeautifulSoupWebReader(BasePydanticReader):
 
         """
         from urllib.parse import urlparse
-
-        import requests
         from bs4 import BeautifulSoup
 
         documents = []
         for url in urls:
             try:
-                page = requests.get(url)
+                page = safe_requests.get(url)
             except Exception:
                 raise ValueError(f"One of the inputs is not a valid url: {url}")
 

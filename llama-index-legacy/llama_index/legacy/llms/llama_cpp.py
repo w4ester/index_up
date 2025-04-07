@@ -1,7 +1,5 @@
 import os
 from typing import Any, Callable, Dict, Optional, Sequence
-
-import requests
 from tqdm import tqdm
 
 from llama_index.legacy.bridge.pydantic import Field, PrivateAttr
@@ -27,6 +25,7 @@ from llama_index.legacy.llms.generic_utils import (
 )
 from llama_index.legacy.types import BaseOutputParser, PydanticProgramMode
 from llama_index.legacy.utils import get_cache_dir
+from security import safe_requests
 
 DEFAULT_LLAMA_CPP_GGML_MODEL = (
     "https://huggingface.co/TheBloke/Llama-2-13B-chat-GGML/resolve"
@@ -181,7 +180,7 @@ class LlamaCPP(CustomLLM):
         completed = False
         try:
             print("Downloading url", model_url, "to path", model_path)
-            with requests.get(model_url, stream=True) as r:
+            with safe_requests.get(model_url, stream=True) as r:
                 with open(model_path, "wb") as file:
                     total_size = int(r.headers.get("Content-Length") or "0")
                     if total_size < 1000 * 1000:

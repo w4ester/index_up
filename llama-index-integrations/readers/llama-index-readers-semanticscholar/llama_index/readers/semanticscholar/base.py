@@ -5,6 +5,7 @@ from typing import List
 import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class SemanticScholarReader(BaseReader):
@@ -54,7 +55,7 @@ class SemanticScholarReader(BaseReader):
             )
         }
         # Making a GET request
-        response = requests.get(url, headers=headers, stream=True)
+        response = safe_requests.get(url, headers=headers, stream=True)
         content_type = response.headers["Content-Type"]
 
         # As long as the content-type is application/pdf, this will download the file

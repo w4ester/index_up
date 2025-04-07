@@ -3,10 +3,9 @@
 import base64
 import os
 from typing import List, Optional
-
-import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+from security import safe_requests
 
 
 class BitbucketReader(BaseReader):
@@ -56,7 +55,7 @@ class BitbucketReader(BaseReader):
             )
             headers = self.get_headers()
 
-            response = requests.get(repos_url, headers=headers)
+            response = safe_requests.get(repos_url, headers=headers)
 
             if response.status_code == 200:
                 repositories = response.json()["values"]
@@ -76,7 +75,7 @@ class BitbucketReader(BaseReader):
             "at": branch,
         }
         headers = self.get_headers()
-        response = requests.get(content_url, headers=headers, params=query_params)
+        response = safe_requests.get(content_url, headers=headers, params=query_params)
         response = response.json()
         if "errors" in response:
             raise ValueError(response["errors"])
@@ -108,7 +107,7 @@ class BitbucketReader(BaseReader):
             "at": branch,
         }
         headers = self.get_headers()
-        response = requests.get(content_url, headers=headers, params=query_params)
+        response = safe_requests.get(content_url, headers=headers, params=query_params)
         children = response.json()
         if "errors" in children:
             raise ValueError(children["errors"])

@@ -14,6 +14,7 @@ from llama_index.core.base.llms.types import (
 )
 from llama_index.core.llms.llm import LLM
 from llama_index.core.bridge.pydantic import Field
+from security import safe_requests
 
 
 class MyMagicAI(LLM):
@@ -199,7 +200,7 @@ class MyMagicAI(LLM):
     def _get_result_sync(self, task_id: str) -> Dict[str, Any]:
         """Polls for the result of a task synchronously."""
         url = f"{self.status_url}/{task_id}"
-        response = requests.get(url, timeout=600.0)
+        response = safe_requests.get(url, timeout=600.0)
         response.raise_for_status()
         return response.json()
 

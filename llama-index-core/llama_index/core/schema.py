@@ -14,6 +14,7 @@ from dataclasses_json import DataClassJsonMixin
 from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.utils import SAMPLE_TEXT, truncate_text
 from typing_extensions import Self
+from security import safe_requests
 
 if TYPE_CHECKING:
     from haystack.schema import Document as HaystackDocument
@@ -480,10 +481,8 @@ class ImageNode(TextNode):
         elif self.image_path is not None:
             return self.image_path
         elif self.image_url is not None:
-            # load image from URL
-            import requests
 
-            response = requests.get(self.image_url)
+            response = safe_requests.get(self.image_url)
             return BytesIO(response.content)
         else:
             raise ValueError("No image found in node.")
