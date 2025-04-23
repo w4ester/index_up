@@ -1,4 +1,3 @@
-import random
 from typing import (
     Any,
     Dict,
@@ -24,6 +23,7 @@ from llama_index.legacy.llms.generic_utils import (
 )
 from llama_index.legacy.llms.llm import LLM
 from llama_index.legacy.llms.nvidia_triton_utils import GrpcTritonClient
+import secrets
 
 DEFAULT_SERVER_URL = "localhost:8001"
 DEFAULT_MAX_RETRIES = 3
@@ -202,7 +202,7 @@ class NvidiaTriton(LLM):
         invocation_params["prompt"] = [[prompt]]
         model_params = self._identifying_params
         model_params.update(kwargs)
-        request_id = str(random.randint(1, 9999999))  # nosec
+        request_id = str(secrets.SystemRandom().randint(1, 9999999))  # nosec
 
         if self.triton_load_model_call:
             client.load_model(model_params["model_name"])

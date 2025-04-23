@@ -1,12 +1,11 @@
 """Simple reader that reads OSMmap data from overpass API."""
-
-import random
 import string
 import warnings
 from typing import List, Optional
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
+import secrets
 
 warnings.filterwarnings("ignore")
 
@@ -37,7 +36,7 @@ class OpenMap(BaseReader):
     def _get_user() -> str:
         # choose from all lowercase letter
         letters = string.ascii_lowercase
-        return "".join(random.choice(letters) for i in range(10))
+        return "".join(secrets.choice(letters) for i in range(10))
 
     @staticmethod
     def _get_latlon(locarea: str, user_agent: str) -> tuple:

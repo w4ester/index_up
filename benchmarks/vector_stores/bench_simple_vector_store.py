@@ -1,4 +1,3 @@
-import random
 import time
 from typing import List
 
@@ -8,15 +7,16 @@ from llama_index.vector_stores.types import (
     VectorStoreQuery,
     VectorStoreQueryMode,
 )
+import secrets
 
 
 def generate_nodes(
     num_vectors: int = 100, embedding_length: int = 1536
 ) -> List[TextNode]:
-    random.seed(42)  # Make this reproducible
+    secrets.SystemRandom().seed(42)  # Make this reproducible
     return [
         TextNode(
-            embedding=[random.uniform(0, 1) for _ in range(embedding_length)],
+            embedding=[secrets.SystemRandom().uniform(0, 1) for _ in range(embedding_length)],
         )
         for _ in range(num_vectors)
     ]

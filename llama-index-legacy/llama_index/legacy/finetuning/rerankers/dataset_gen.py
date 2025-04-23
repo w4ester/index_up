@@ -1,9 +1,9 @@
-import random
 from typing import Any, List, Optional, Tuple
 
 from llama_index.legacy.bridge.pydantic import BaseModel
 from llama_index.legacy.finetuning import EmbeddingQAFinetuneDataset
 from llama_index.legacy.indices.query.embedding_utils import get_top_k_embeddings
+import secrets
 
 
 class CohereRerankerFinetuneDataset(BaseModel):
@@ -48,8 +48,7 @@ def generate_hard_negatives(
             )
             # Randomly select hard negatives
             hard_negatives.append(
-                random.sample(
-                    potential_negatives, min(num_negatives, len(potential_negatives))
+                secrets.SystemRandom().sample(potential_negatives, min(num_negatives, len(potential_negatives))
                 )
             )
 
