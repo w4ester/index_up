@@ -1,10 +1,10 @@
 import urllib.request
-import xml.etree.ElementTree as ET
 from typing import List
 
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from llama_index.readers.web.async_web.base import AsyncWebPageReader
+import defusedxml.ElementTree
 
 
 class SitemapReader(BaseReader):
@@ -34,7 +34,7 @@ class SitemapReader(BaseReader):
         return sitemap_url_request.read()
 
     def _parse_sitemap(self, raw_sitemap: str, filter_locs: str = None) -> list:
-        sitemap = ET.fromstring(raw_sitemap)
+        sitemap = defusedxml.ElementTree.fromstring(raw_sitemap)
         sitemap_urls = []
 
         for url in sitemap.findall(f"{{{self.xml_schema_sitemap}}}url"):
