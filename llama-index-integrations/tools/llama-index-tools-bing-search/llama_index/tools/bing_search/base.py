@@ -26,7 +26,7 @@ class BingSearchToolSpec(BaseToolSpec):
             ENDPOINT_BASE_URL + endpoint,
             headers={"Ocp-Apim-Subscription-Key": self.api_key},
             params={"q": query, "mkt": self.lang, "count": self.results},
-        )
+        timeout=60)
         response_json = response.json()
         return [[result[key] for key in keys] for result in response_json["value"]]
 

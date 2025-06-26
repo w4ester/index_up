@@ -77,7 +77,7 @@ class WordpressReader(BaseReader):
 
         url = f"{self.url}/wp-json/wp/v2/posts?per_page=100&page={current_page}"
 
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         headers = response.headers
 
         if "X-WP-TotalPages" in headers:

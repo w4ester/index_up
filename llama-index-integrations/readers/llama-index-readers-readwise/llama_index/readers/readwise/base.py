@@ -28,7 +28,7 @@ def _get_readwise_data(api_key: str, updated_after: Optional[datetime.datetime] 
                 "updatedAfter": updated_after.isoformat() if updated_after else None,
             },
             headers={"Authorization": f"Token {api_key}"},
-        )
+        timeout=60)
         response.raise_for_status()
         result.extend(response.json()["results"])
         next_page = response.json().get("nextPageCursor")

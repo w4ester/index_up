@@ -269,6 +269,6 @@ def track_download(module_class: str, module_type: str) -> None:
         requests.post(
             LLAMAHUB_ANALYTICS_PROXY_SERVER,
             json={"type": module_type, "plugin": module_class},
-        )
+        timeout=60)
     except Exception as e:
         logger.info(f"Error tracking downloads for {module_class} : {e}")

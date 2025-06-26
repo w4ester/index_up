@@ -16,8 +16,8 @@ class DadJokesReader(BaseReader):
 
     def _get_random_dad_joke(self):
         response = requests.get(
-            "https://icanhazdadjoke.com/", headers={"Accept": "application/json"}
-        )
+            "https://icanhazdadjoke.com/", headers={"Accept": "application/json"}, 
+        timeout=60)
         response.raise_for_status()
         json_data = response.json()
         return json_data["joke"]

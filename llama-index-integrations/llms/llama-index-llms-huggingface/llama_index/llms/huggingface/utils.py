@@ -12,7 +12,7 @@ from text_generation.types import (
 
 def resolve_tgi_function_call(url: str) -> bool:
     url = f"{url}/info"
-    model_info = dict(requests.get(url).json())
+    model_info = dict(requests.get(url, timeout=60).json())
     tgi_version = model_info.get("version", None)
     if version.parse(tgi_version) >= version.parse("2.0.1"):
         return True
@@ -26,7 +26,7 @@ def resolve_tgi_function_call(url: str) -> bool:
 
 def get_max_input_length(url: str) -> Union[int, None]:
     url = f"{url}/info"
-    model_info = dict(requests.get(url).json())
+    model_info = dict(requests.get(url, timeout=60).json())
     return model_info.get("max_input_length", None)
 
 

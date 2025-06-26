@@ -59,7 +59,7 @@ class SimpleWebPageReader(BasePydanticReader):
             raise ValueError("urls must be a list of strings.")
         documents = []
         for url in urls:
-            response = requests.get(url, headers=None).text
+            response = requests.get(url, headers=None, timeout=60).text
             if self.html_to_text:
                 import html2text
 

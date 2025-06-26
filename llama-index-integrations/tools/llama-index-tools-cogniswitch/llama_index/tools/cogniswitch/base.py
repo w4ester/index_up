@@ -91,7 +91,7 @@ class CogniswitchToolSpec(BaseToolSpec):
                 "documentName": document_name,
                 "documentDescription": document_description,
             }
-            response = requests.post(api_url, headers=headers, data=data, files=files)
+            response = requests.post(api_url, headers=headers, data=data, files=files, timeout=60)
 
         elif file:
             api_url = self.source_file_endpoint
@@ -106,7 +106,7 @@ class CogniswitchToolSpec(BaseToolSpec):
                 "documentName": document_name,
                 "documentDescription": document_description,
             }
-            response = requests.post(api_url, headers=headers, data=data, files=files)
+            response = requests.post(api_url, headers=headers, data=data, files=files, timeout=60)
         if response.status_code == 200:
             return response.json()
         else:
@@ -130,7 +130,7 @@ class CogniswitchToolSpec(BaseToolSpec):
         headers = self.headers
 
         data = {"query": query}
-        response = requests.post(api_url, headers=headers, data=data)
+        response = requests.post(api_url, headers=headers, data=data, timeout=60)
         if response.status_code == 200:
             return response.json()
         else:
@@ -153,7 +153,7 @@ class CogniswitchToolSpec(BaseToolSpec):
             self.knowledge_status_endpoint,
             headers=self.headers,
             params=params,
-        )
+        timeout=60)
         if response.status_code == 200:
             source_info = response.json()
             return source_info[-1]

@@ -30,7 +30,7 @@ class YouRetriever(BaseRetriever):
         results = requests.get(
             f"https://api.ydc-index.io/search?query={query_bundle.query_str}",
             headers=headers,
-        ).json()
+        timeout=60).json()
 
         search_hits = ["\n".join(hit["snippets"]) for hit in results["hits"]]
         return [NodeWithScore(node=TextNode(text=s), score=1.0) for s in search_hits]

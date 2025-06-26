@@ -38,5 +38,5 @@ class GraphQLToolSpec(BaseToolSpec):
                 "variables": variables,
                 "operationName": operation_name,
             },
-        )
+        timeout=60)
         return res.text
