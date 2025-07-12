@@ -4,8 +4,8 @@ from io import BytesIO
 from typing import List, Optional
 
 import openai
-import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 
 class TextToImageToolSpec(BaseToolSpec):
@@ -51,7 +51,7 @@ class TextToImageToolSpec(BaseToolSpec):
         """
         try:
             response = openai.Image.create_variation(
-                image=BytesIO(requests.get(url).content).getvalue(), n=n, size=size
+                image=BytesIO(safe_requests.get(url).content).getvalue(), n=n, size=size
             )
             return [image["url"] for image in response["data"]]
         except openai.error.OpenAIError as e:
@@ -69,5 +69,5 @@ class TextToImageToolSpec(BaseToolSpec):
 
         for url in urls:
             plt.figure()
-            plt.imshow(Image.open(BytesIO(requests.get(url).content)))
+            plt.imshow(Image.open(BytesIO(safe_requests.get(url).content)))
         return "images rendered successfully"

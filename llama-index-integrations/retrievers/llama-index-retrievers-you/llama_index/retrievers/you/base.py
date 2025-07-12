@@ -3,11 +3,10 @@
 import logging
 import os
 from typing import List, Optional
-
-import requests
 from llama_index.core.base.base_retriever import BaseRetriever
 from llama_index.core.callbacks.base import CallbackManager
 from llama_index.core.schema import NodeWithScore, QueryBundle, TextNode
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ class YouRetriever(BaseRetriever):
     def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
         """Retrieve."""
         headers = {"X-API-Key": self._api_key}
-        results = requests.get(
+        results = safe_requests.get(
             f"https://api.ydc-index.io/search?query={query_bundle.query_str}",
             headers=headers,
         ).json()

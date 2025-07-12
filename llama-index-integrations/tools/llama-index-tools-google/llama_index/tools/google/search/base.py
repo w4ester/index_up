@@ -2,10 +2,9 @@
 
 import urllib.parse
 from typing import Optional
-
-import requests
 from llama_index.core.schema import Document
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 QUERY_URL_TMPL = (
     "https://www.googleapis.com/customsearch/v1?key={key}&cx={engine}&q={query}"
@@ -43,5 +42,5 @@ class GoogleSearchToolSpec(BaseToolSpec):
                 raise ValueError("num should be an integer between 1 and 10, inclusive")
             url += f"&num={self.num}"
 
-        response = requests.get(url)
+        response = safe_requests.get(url)
         return [Document(text=response.text)]

@@ -16,6 +16,7 @@ from azure.core.credentials import AccessToken
 import requests
 
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 
 @dataclass
@@ -264,7 +265,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
             "Authorization": f"Bearer {access_token}",
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = safe_requests.get(api_url, headers=headers)
         response.raise_for_status()
 
         if local_file_path:
@@ -286,7 +287,7 @@ class AzureCodeInterpreterToolSpec(BaseToolSpec):
             "Authorization": f"Bearer {access_token}",
         }
 
-        response = requests.get(api_url, headers=headers)
+        response = safe_requests.get(api_url, headers=headers)
         response.raise_for_status()
 
         response_json = response.json()

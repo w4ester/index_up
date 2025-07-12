@@ -9,6 +9,7 @@ import requests
 from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from retrying import retry
+from security import safe_requests
 
 CONFLUENCE_API_TOKEN = "CONFLUENCE_API_TOKEN"
 CONFLUENCE_PASSWORD = "CONFLUENCE_PASSWORD"
@@ -466,14 +467,13 @@ class ConfluenceReader(BaseReader):
     def process_html(self, link):
         try:
             from bs4 import BeautifulSoup  # type: ignore
-            import requests
         except ImportError:
             raise ImportError(
                 "`beautifulsoup4` or `requests` package not found, please run `pip install beautifulsoup4 requests`"
             )
 
         try:
-            response = requests.get(link)
+            response = safe_requests.get(link)
             if response.status_code != 200:
                 return "Error fetching HTML content: HTTP Status Code {}".format(
                     response.status_code
@@ -488,14 +488,14 @@ class ConfluenceReader(BaseReader):
 
     def process_txt(self, link):
         try:
-            import requests
+            pass
         except ImportError:
             raise ImportError(
                 "`requests` package not found, please run `pip install requests`"
             )
 
         try:
-            response = requests.get(link)
+            response = safe_requests.get(link)
             if response.status_code != 200:
                 return "Error fetching text content: HTTP Status Code {}".format(
                     response.status_code

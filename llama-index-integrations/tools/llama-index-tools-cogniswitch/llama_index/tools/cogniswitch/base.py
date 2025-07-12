@@ -3,6 +3,7 @@ from typing import Optional
 
 import requests
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_requests
 
 
 class CogniswitchToolSpec(BaseToolSpec):
@@ -149,7 +150,7 @@ class CogniswitchToolSpec(BaseToolSpec):
             dict: Response JSON from the Cogniswitch service.
         """
         params = {"docName": document_name, "platformToken": self.cs_token}
-        response = requests.get(
+        response = safe_requests.get(
             self.knowledge_status_endpoint,
             headers=self.headers,
             params=params,
