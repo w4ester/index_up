@@ -2,8 +2,8 @@
 import argparse
 import json
 import os
-import random
 import shutil
+import secrets
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -47,18 +47,15 @@ if __name__ == "__main__":
         dev = json.load(f)
 
     # Randomly sample (without replacement) the indices using the sample factor.
-    random.seed(args.seed)
+    secrets.SystemRandom().seed(args.seed)
     train_spider_indices = list(range(len(train_spider)))
     train_others_indices = list(range(len(train_others)))
     dev_indices = list(range(len(dev)))
-    train_spider_indices = random.choices(
-        train_spider_indices, k=int(args.sample_factor * len(train_spider_indices))
+    train_spider_indices = secrets.SystemRandom().choices(train_spider_indices, k=int(args.sample_factor * len(train_spider_indices))
     )
-    train_others_indices = random.choices(
-        train_others_indices, k=int(args.sample_factor * len(train_others_indices))
+    train_others_indices = secrets.SystemRandom().choices(train_others_indices, k=int(args.sample_factor * len(train_others_indices))
     )
-    dev_indices = random.choices(
-        dev_indices, k=int(args.sample_factor * len(dev_indices))
+    dev_indices = secrets.SystemRandom().choices(dev_indices, k=int(args.sample_factor * len(dev_indices))
     )
     # Sort the indices to ensure same ordering as the original sql files.
     train_spider_indices.sort()

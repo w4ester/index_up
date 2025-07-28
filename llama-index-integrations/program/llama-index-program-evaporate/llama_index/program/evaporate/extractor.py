@@ -1,4 +1,3 @@
-import random
 import re
 import signal
 from collections import defaultdict
@@ -17,6 +16,7 @@ from llama_index.program.evaporate.prompts import (
     FnGeneratePrompt,
     SchemaIDPrompt,
 )
+import secrets
 
 
 class TimeoutException(Exception):
@@ -244,7 +244,7 @@ class EvaporateExtractor:
         """Extract datapoints from a list of nodes, given a topic."""
         idxs = list(range(len(nodes)))
         sample_k = min(sample_k, len(nodes))
-        subset_idxs = random.sample(idxs, sample_k)
+        subset_idxs = secrets.SystemRandom().sample(idxs, sample_k)
         subset_nodes = [nodes[si] for si in subset_idxs]
 
         # get existing fields

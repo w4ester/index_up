@@ -1,6 +1,5 @@
 import abc
 import json
-import random
 import time
 from functools import partial
 from queue import Queue
@@ -15,6 +14,7 @@ from typing import (
 )
 
 import numpy as np
+import secrets
 
 if TYPE_CHECKING:
     import tritonclient.grpc as grpcclient
@@ -319,7 +319,7 @@ class GrpcTritonClient(_BaseTritonClient):
             raise RuntimeError("Cannot request streaming, model is not loaded")
 
         if not request_id:
-            request_id = str(random.randint(1, 9999999))  # nosec
+            request_id = str(secrets.SystemRandom().randint(1, 9999999))  # nosec
 
         result_queue = StreamingResponseGenerator(self, request_id, force_batch)
         inputs = self._generate_inputs(stream=not force_batch, **params)
