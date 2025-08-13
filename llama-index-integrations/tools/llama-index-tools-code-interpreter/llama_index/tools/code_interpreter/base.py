@@ -4,6 +4,7 @@ import subprocess
 import sys
 
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from security import safe_command
 
 
 class CodeInterpreterToolSpec(BaseToolSpec):
@@ -30,5 +31,5 @@ class CodeInterpreterToolSpec(BaseToolSpec):
 
         It is not possible to return graphics or other complicated data from this function. If the user cannot see the output, save it to a file and tell the user.
         """
-        result = subprocess.run([sys.executable, "-c", code], capture_output=True)
+        result = safe_command.run(subprocess.run, [sys.executable, "-c", code], capture_output=True)
         return f"StdOut:\n{result.stdout}\nStdErr:\n{result.stderr}"
